@@ -8,6 +8,57 @@ enum Status {
     Done,
 }
 
+impl std::fmt::Display for Status {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        match &self {
+            Status::ToDo => write!(f, "ToDo"),
+            Status::InProgress => write!(f, "InProgress"),
+            Status::Done => write!(f, "Done"),
+        }
+    }
+}
+
+impl TryFrom<String> for Status {
+    type Error = String;
+
+    fn try_from(value: String) -> Result<Status, Self::Error> {
+        /*
+        match value.to_lowercase().as_str() {
+            "todo" => Ok(Status::ToDo),
+            "inprogress" => Ok(Status::InProgress),
+            "done" => Ok(Status::Done),
+            _ => Err(format!("Cannot convert `{}` to Status", value))
+        }
+        */
+        str_to_status(value.as_str())
+    }
+}
+
+impl TryFrom<&str> for Status {
+    type Error = String;
+    
+    fn try_from(value: &str) -> Result<Status, Self::Error> {
+        /*
+        match value.to_lowercase().as_str() {
+            "todo" => Ok(Status::ToDo),
+            "inprogress" => Ok(Status::InProgress),
+            "done" => Ok(Status::Done),
+            _ => Err(format!("Cannot convert `{}` to Status", value)),
+        }
+        */
+        str_to_status(value)
+    }
+}
+
+fn str_to_status(value: &str) -> Result<Status, String> {
+    match value.to_lowercase().as_str() {
+        "todo" => Ok(Status::ToDo),
+        "inprogress" => Ok(Status::InProgress),
+        "done" => Ok(Status::Done),
+        _ => Err(format!("Cannot convert `{}` to Status", value)),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
